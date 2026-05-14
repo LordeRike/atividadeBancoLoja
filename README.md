@@ -1,18 +1,26 @@
-## Getting Started
+registro de atividades:
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+Atividade 1: Altere o projeto feito como exemplo criando uma nova rotina que receba como parâmetro o ID do cliente e liste somente os dados deste cliente.
 
-## Folder Structure
+Ativade 2: No banco de dados loja, crie a tabela produtos com os campos id do produto, descrição e quantidade em estoque
+Crie o campo id_produto na tabela venda_item e crie a FK com a tabela produtoss
 
-The workspace contains two folders by default, where:
+No mesmo programa do exemplo (e da atividade anterior) crie um método para inserir um produto e outro para listar todos os produtos
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+Ativadade 3: mplemente a estrutura CRUD/DAO para a tabela de produtos criada nas atividades anteriores
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
+Atividade 4: Dentro da classe ClienteDAO (passada como exemplo na aula 06 - 23/04/2026). Implemente uma função que receba o nome do cliente (parâmetro do tipo String) pesquise no banco (lembrando que o parâmetro passado pode ser somente parte do nome) e, se caso encontre, retorne um objeto do tipo Cliente com os dados do cliente.
 
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
+Dica: Utilize o like para fazer a pesquisa no banco
 
-## Dependency Management
+Atividade 5: Já vimos o básico agora é treinar a lógica em um contexto cada vez mais perto da realidade
+Dando sequencia as atividades anteriores. Incluir um novo menu chamado Vendas.
+Ao acessar esse menu o usuário dever informar os dados necessário para gravar as informações na tabela vendas. 
+Após isso o usuário poderá adicionar produtos a venda. Ele pode adicionar quantos produtos quiser (mas pelo menos 1 ele é obrigado a informar) 
+Após terminar de inserir todos os produtos o sistema deverá apresentar uma espécie de nota fiscal da compra (data da compra, Nome do cliente e total da venda ) e uma lista discriminada dos itens (descrição do produto, quantidade, valor unitário e valor total por produto)
 
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+Atividade 6: Já vimos o básico agora é treinar a lógica em um contexto cada vez mais perto da realidade
+Dando sequencia as atividades anteriores. Incluir um novo menu chamado Vendas.
+Ao acessar esse menu o usuário dever informar os dados necessário para gravar as informações na tabela vendas. 
+Após isso o usuário poderá adicionar produtos a venda. Ele pode adicionar quantos produtos quiser (mas pelo menos 1 ele é obrigado a informar) 
+Após terminar de inserir todos os produtos o sistema deverá apresentar uma espécie de nota fiscal da compra (data da compra, Nome do cliente e total da venda ) e uma lista discriminada dos itens (descrição do produto, quantidade, valor unitário e valor total por produto)
