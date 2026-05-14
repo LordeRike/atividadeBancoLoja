@@ -1,0 +1,273 @@
+import java.nio.channels.Pipe.SourceChannel;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Scanner;
+
+public class App2 {
+    // Configurações de conexão 
+   private static final String URL = "jdbc:postgresql://localhost:5432/loja";
+   private static final String USER = "postgres";
+   private static final String PASS = "1234"; 
+
+   public static void main(String[] args) {
+   // Configurações de conexão 
+   private static final String URL = "jdbc:postgresql://localhost:5432/loja";
+   private static final String USER = "postgres";
+   private static final String PASS = "1234"; 
+
+   public static void main(String[] args) {
+
+    int opcao;
+    do {
+        Scanner leitor = new Scanner(System.in);
+                
+        System.out.println("== MENU ==");
+        System.out.println("== |1| Inserir Cliente ==");
+        System.out.println("== |2| Listar Clientes ==");
+        System.out.println("== |3| Buscar Cliente ==");
+        System.out.println("== |4| Inserir Produto ==");
+        System.out.println("== |5| Listar Produtos ==");
+        System.out.println("== |6| Buscar Produto ==");
+        System.out.println("== |7| Sair ==");
+        System.out.print("Escolha uma opção: ");
+        
+        opcao = leitor.nextInt();
+        leitor.nextLine();
+
+        // Estrutura Switch Case
+        switch (opcao) {
+            case 1:
+                System.out.println("== Inserir Cliente ==");
+                System.out.println("");
+                System.out.print("Digite o nome: ");
+                String nome = leitor.nextLine();
+                System.out.print("Digite o endereco: ");
+                String endereco = leitor.nextLine();
+                inserirCliente(nome, endereco);
+                System.out.println("===========================================");
+                break;
+
+            case 2:
+                System.out.println("== Listar Clientes ==");
+                listarClientes(); 
+                System.out.println("===========================================");               
+                break;
+
+            case 3:
+                System.out.println("== Buscar Cliente ==");
+                buscaCliente();
+                System.out.println("===========================================");
+                break;
+
+            case 4:
+                System.out.println("== Inserir Produto ==");
+                System.out.println("");
+                System.out.print("Digite a descrição do produto: ");
+                String descricao = leitor.nextLine();
+                System.out.print("Digite a quantidade: ");
+                int quantidade_estoque = leitor.nextInt();
+                leitor.nextLine();
+                inserirProduto(descricao, quantidade_estoque);
+                System.out.println("===========================================");
+                break;
+
+            case 5:
+                System.out.println("== Listar Produtos ==");
+                listarProdutos();
+                System.out.println("===========================================");
+                break;
+
+            case 6:
+                System.out.println("== Buscar Produto ==");
+                buscarProduto();
+                System.out.println("===========================================");
+                break;
+
+            case 7:
+                System.out.println("== Saindo do sistema...");
+                break; 
+
+            default:
+                System.out.println("Opção inválida! Tente novamente.");
+                break;
+            }
+        } while (opcao != 7);
+
+       // Exemplo de uso
+       /*Scanner leitor = new Scanner(System.in); 
+       System.out.print("Digite o nome: ");
+       String nome = leitor.nextLine();
+       System.out.print("Digite o endereco: ");
+       String endereco = leitor.nextLine();
+       inserirCliente(nome, endereco);*/
+
+       /*Scanner leitor = new Scanner(System.in); 
+       System.out.print("Digite a descrição do produto: ");
+       String descricao = leitor.nextLine();
+       System.out.print("Digite a quantidade: ");
+       int quantidade_estoque = leitor.nextInt();
+       leitor.nextLine();
+       inserirProduto(descricao, quantidade_estoque);*/
+
+       //listarClientes();
+       //buscaCliente();
+       //inserirProduto();
+       //listarProdutos();
+    }
+
+   // 1. Método para Inserir (INSERT)
+   public static void inserirCliente(String nome, String endereco) {
+       String sql = "INSERT INTO cliente (nome, endereco) VALUES (?, ?)";
+
+       try (Connection conn = DriverManager.getConnection(URL, USER, PASS);
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+           pstmt.setString(1, nome);
+           pstmt.setString(2, endereco);
+           pstmt.executeUpdate();
+
+           System.out.println("Cliente inserido com sucesso!");
+           System.out.println("");
+
+        } catch (SQLException e) {
+           System.err.println("Erro ao inserir cliente: " + e.getMessage());
+        }    
+   }
+
+   // 2. Método para Consultar (SELECT)
+   public static void listarClientes() {
+       String sql = "SELECT id_cliente, nome, endereco FROM cliente";
+
+       try (Connection conn = DriverManager.getConnection(URL, USER, PASS);
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery()) {
+
+           System.out.println("\n--- LISTA DE CLIENTES NO BANCO ---");
+           while (rs.next()) {
+               int id = rs.getInt("id_cliente");
+               String nome = rs.getString("nome");
+               String endereco = rs.getString("endereco");
+
+               System.out.printf("ID: %d | Nome: %s | Endereço: %s%n", id, nome, endereco);
+               System.out.println("===========================================");
+               
+            }
+
+        } catch (SQLException e) {
+           System.err.println("Erro ao listar clientes: " + e.getMessage());
+        }
+    }
+   
+
+   // 3. Método para consultar um cliente
+   public static void buscaCliente() {
+        Scanner leitor = new Scanner(System.in);
+
+        System.out.println("== Busca de cliente ==");
+        System.out.print("== Digite o ID do cliente: ");
+        int busca_cliente = leitor.nextInt();
+        leitor.nextLine();
+
+        String sql = "SELECT * FROM cliente WHERE (id_cliente = "+busca_cliente+")";
+
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASS);
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery()) {
+
+            System.out.println("\n--- CLIENTE NO BANCO ---");
+            while (rs.next()) {
+                int id = rs.getInt("id_cliente");
+                String nome = rs.getString("nome");
+                String endereco = rs.getString("endereco");
+
+                System.out.printf("ID: %d | Nome: %s | Endereço: %s%n", id, nome, endereco);
+                System.out.println("===========================================");
+                
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao listar cliente: " + e.getMessage());
+        }
+        
+    }
+
+    // 4. Metodo inserir tabela produto
+    public static void inserirProduto(String descricao, int quantidade_estoque) {
+        String sql = "INSERT INTO produtos (descricao, quantidade_estoque) VALUES ( ?, ?)";
+ 
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASS);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+ 
+            pstmt.setString(1, descricao);
+            pstmt.setInt(2, quantidade_estoque);
+            pstmt.executeUpdate();
+ 
+            System.out.println("produto cadastrado com sucesso!");
+            System.out.println("");
+ 
+        } catch (SQLException e) {
+            System.err.println("Erro ao inserir produto: " + e.getMessage());
+        }
+    }
+
+    // 5. Medoto listar produtos
+    public static void listarProdutos() {
+        String sql = "SELECT id_produto, descricao, quantidade_estoque FROM produtos";
+ 
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASS);
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+ 
+            System.out.println("\n--- LISTA DE PRODUTOS NO BANCO ---");
+            while (rs.next()) {
+                int id = rs.getInt("id_produto");
+                String descricao = rs.getString("descricao");
+                String quantidade = rs.getString("quantidade_estoque");
+ 
+                System.out.printf("ID: %d | Descrição: %s | Quantidade: %s%n", id, descricao, quantidade);
+                System.out.println("===========================================");
+                
+            }
+ 
+        } catch (SQLException e) {
+            System.err.println("Erro ao listar produtos: " + e.getMessage());
+        }
+    }
+
+    // 6. Metodo Buscar Produto
+    public static void buscarProduto() {
+        Scanner leitor = new Scanner(System.in);
+
+        System.out.println("== Busca de produto ==");
+        System.out.print("== Digite o ID do produto: ");
+        int busca_cliente = leitor.nextInt();
+        leitor.nextLine();
+
+        String sql = "SELECT * FROM produtos WHERE (id_produto = "+busca_cliente+")";
+
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASS);
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery()) {
+
+            System.out.println("\n--- CLIENTE NO BANCO ---");
+            while (rs.next()) {
+                int id = rs.getInt("id_produto");
+                String descricao = rs.getString("descricao");
+                String quantidade = rs.getString("quantidade_estoque");
+ 
+                System.out.printf("ID: %d | Descrição: %s | Quantidade: %s%n", id, descricao, quantidade);
+                System.out.println("===========================================");
+                
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao listar produto: " + e.getMessage());
+        }
+        
+    }
+
+}
