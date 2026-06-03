@@ -24,3 +24,11 @@ Dando sequencia as atividades anteriores. Incluir um novo menu chamado Vendas.
 Ao acessar esse menu o usuário dever informar os dados necessário para gravar as informações na tabela vendas. 
 Após isso o usuário poderá adicionar produtos a venda. Ele pode adicionar quantos produtos quiser (mas pelo menos 1 ele é obrigado a informar) 
 Após terminar de inserir todos os produtos o sistema deverá apresentar uma espécie de nota fiscal da compra (data da compra, Nome do cliente e total da venda ) e uma lista discriminada dos itens (descrição do produto, quantidade, valor unitário e valor total por produto)
+
+Atividade 7: Usando o como base o programa de exemplo de como consumir uma API. Modifique o mesmo para que grave em uma tabela no banco de dados loja o ID do conselho, o Conselho, e a data em que foi feita a consulta. Para isso pode criar uma nova tabela chamada conselho.
+
+Atividade 8: Modificar o programa da atividade 1 para perguntar ao usuário se ele  deseja receber um conselho aleatório ou um especifico. Caso ele queira receber um especifico pedir para o usuário informar o id do conselho que ele quer receber e fazer a consulta deste conselho especifico, caso contrario siga fazendo a consulta randômica.
+Para os dois tipos de consulta, a mesma deve continuar sendo salva no banco de dados.
+Incluir um novo campo na tabela conselho e armazenar se o conselho consultado foi específico ou aleatório.
+
+Após consultar um conselho perguntar para o usuário se o mesmo deseja fazer uma nova consulta ou encerrar o programa. Caso ele queira continuar, deve-se repetir todo o processo.
