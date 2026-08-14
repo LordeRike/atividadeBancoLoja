@@ -26,7 +26,7 @@ public class ClienteDAO {
     // READ - Listar todos os clientes
     public List<Cliente> listarTodos() throws SQLException {
         List<Cliente> clientes = new ArrayList<>();
-        String sql = "SELECT * FROM cliente";
+        String sql = "SELECT * FROM cliente ORDER BY id_cliente";
         try (PreparedStatement stmt = conexao.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
@@ -60,13 +60,18 @@ public class ClienteDAO {
     }
 
     // UPDATE - Atualizar dados do cliente
-    public void atualizar(Cliente cliente) throws SQLException {
+    public void atualizar(Cliente cliente) throws SQLException {        
+
         String sql = "UPDATE cliente SET nome = ?, endereco = ? WHERE id_cliente = ?";
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
             stmt.setString(1, cliente.getNome());
             stmt.setString(2, cliente.getEndereco());
             stmt.setInt(3, cliente.getIdCliente());
-            stmt.executeUpdate();
+            int val = stmt.executeUpdate();
+
+            if (val == 0) {
+                throw new IllegalArgumentException("Cliente não exite no banco de dados.");
+            }
         }
     }
 
@@ -75,7 +80,12 @@ public class ClienteDAO {
         String sql = "DELETE FROM cliente WHERE id_cliente = ?";
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
             stmt.setInt(1, id);
-            stmt.executeUpdate();
+            int val = stmt.executeUpdate();
+
+            if (val == 0) {
+                throw new IllegalArgumentException("Cliente com o ID "+ id 
+                + " não exite no banco de dados.");  
+            }
         }
     }
 

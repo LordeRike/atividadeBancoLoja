@@ -2,7 +2,8 @@
     "java.project.sourcePaths": ["src"],
     "java.project.outputPath": "bin",
     "java.project.referencedLibraries": [
-        "lib/**/*.jar"
+        "lib/**/*.jar",
+        "c:\\Users\\HENRIQUEDACOSTAAZERE\\Documents\\tds uc09\\API\\minimal-json.jar"
     ],
     "java.debug.settings.onBuildFailureProceed": true
 }

@@ -5,14 +5,22 @@ import java.sql.SQLException;
 //import java.util.ArrayList;
 //import java.util.List;
 
-
-
 public class VendaDAO {
     private Connection conexao;
 
     // Construtor que recebe a conexão por parâmetro
     public VendaDAO(Connection conexao) {
         this.conexao = conexao;
+    }
+
+    public boolean existeVenda(int idVenda) throws SQLException {
+        String sql = "SELECT 1 FROM venda WHERE id_venda = ?";
+        try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
+            stmt.setInt(1, idVenda);
+            try (ResultSet rs = stmt.executeQuery()) {
+                return rs.next();
+            }
+        }
     }
 
     //Consultar id de venda
@@ -82,6 +90,37 @@ public class VendaDAO {
                     System.out.println("===========================================\n");
                 }
             }
+        }
+    }
+
+    public void atualizarVenda(int idVenda, int novoIDCliente) throws SQLException {
+        if (!existeVenda(idVenda)) {
+            throw new IllegalArgumentException("Venda não encontrada");            
+        }
+        
+        String sql = "UPDATE venda SET id_cliente = ?, data_venda = ? WHERE id_venda = ?";
+        try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
+            stmt.setInt(1, novoIDCliente);
+            stmt.setInt(3, idVenda);
+            stmt.executeUpdate();            
+        }
+    }
+
+    public void excluirVenda(int idVenda) throws SQLException {
+        if (!existeVenda(idVenda)) {
+            throw new IllegalArgumentException("Venda não encontrada");            
+        }
+
+        String sqlItem = "DELETE FROM venda WHERE id_venda = ?;"+
+        "DELETE FROM venda_item WHERE id_venda_item = ?";
+        try (PreparedStatement stmtItens = conexao.prepareStatement(sqlItem)) {
+            stmtItens.setInt(1, idVenda);
+            stmtItens.executeUpdate();
+        }
+        String sqlVenda = "DELETE FROM venda WHERE id_venda = ?";
+        try (PreparedStatement stmtVenda = conexao.prepareStatement(sqlVenda)) {
+            stmtVenda.setInt(1, idVenda);
+            stmtVenda.executeUpdate();
         }
     }
 
